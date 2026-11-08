@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestão de Funcionários | Startup de Tecnologia</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header da Aplicação -->
+        <header class="app-header">
+            <div>
+                <div class="brand-badge">
+                    <span class="dot"></span>
+                    <span>Startup Tech HR System</span>
+                </div>
+                <h1>Gestão de Funcionários</h1>
+                <p>Estudo de caso prático demonstrando Programação Orientada a Objetos, Manipulação do DOM, Funções Anônimas, Expressões Lambda e Streams JS (map, filter, reduce).</p>
+            </div>
+            <div class="header-badges">
+                <span class="pill-badge">☕ JavaScript Moderno (ES6+)</span>
+                <span class="pill-badge">📦 POO & Encapsulamento</span>
+                <span class="pill-badge">⚡ Lambda & Streams</span>
+                <span class="pill-badge">🐳 Docker Ready</span>
+            </div>
+        </header>
+
+        <!-- Grid Principal: Formulário à esquerda, Tabela à direita -->
+        <main class="main-grid">
+            
+            <!-- Coluna 1: Formulário de Cadastro e Edição (Exercício 1 & 2) -->
+            <section class="card" aria-labelledby="form-title">
+                <div class="card-header">
+                    <h2 id="form-title">
+                        <span id="form-icon">➕</span>
+                        <span id="form-heading-text">Cadastrar Funcionário</span>
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <form id="form-funcionario" novalidate>
+                        <!-- Campo oculto para armazenar o ID do funcionário em edição -->
+                        <input type="hidden" id="funcionario-id">
+
+                        <div class="form-group">
+                            <label for="nome">Nome Completo <span class="required">*</span></label>
+                            <input 
+                                type="text" 
+                                id="nome" 
+                                class="form-control" 
+                                placeholder="Ex: Ana Silva" 
+                                required
+                                autocomplete="off"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="idade">Idade <span class="required">*</span></label>
+                            <input 
+                                type="number" 
+                                id="idade" 
+                                class="form-control" 
+                                placeholder="Ex: 28" 
+                                min="16" 
+                                max="100" 
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cargo">Cargo <span class="required">*</span></label>
+                            <input 
+                                type="text" 
+                                id="cargo" 
+                                class="form-control" 
+                                placeholder="Ex: Desenvolvedora Full Stack" 
+                                required
+                                autocomplete="off"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="salario">Salário Mensal (R$) <span class="required">*</span></label>
+                            <input 
+                                type="number" 
+                                id="salario" 
+                                class="form-control" 
+                                placeholder="Ex: 7500.00" 
+                                min="0" 
+                                step="100" 
+                                required
+                            >
+                        </div>
+
+                        <div class="form-actions">
+                            <!-- Botão principal de submissão (Exercício 1 e 2) -->
+                            <button type="submit" id="btn-submit" class="btn btn-primary">
+                                <span>💾</span>
+                                <span id="btn-submit-text">Cadastrar</span>
+                            </button>
+                            <!-- Botão para cancelar a edição (Exercício 2) -->
+                            <button type="button" id="btn-cancelar" class="btn btn-secondary" style="display: none;">
+                                <span>✖️</span>
+                                <span>Cancelar Edição</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Coluna 2: Tabela de Funcionários (Exercício 1, 2 e 3) -->
+            <section class="card" aria-labelledby="table-title">
+                <div class="card-header">
+                    <h2 id="table-title">
+                        <span>📋</span>
+                        <span>Lista de Colaboradores</span>
+                    </h2>
+                    <span class="badge-count" id="badge-total">0 cadastrados</span>
+                </div>
+
+                <!-- Barra de Busca Rápida (exercício 3: busca com Arrow Function) -->
+                <div class="table-toolbar">
+                    <div class="search-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input 
+                            type="text" 
+                            id="input-busca" 
+                            class="search-input" 
+                            placeholder="Buscar por nome, cargo ou ID..."
+                        >
+                    </div>
+                    <button type="button" id="btn-reset-dados" class="btn btn-secondary btn-sm" title="Restaurar dados de exemplo">
+                        🔄 Recarregar Exemplos
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table" id="tabela-funcionarios">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">ID</th>
+                                <th>Nome</th>
+                                <th style="width: 90px;">Idade</th>
+                                <th>Cargo</th>
+                                <th style="width: 140px;">Salário</th>
+                                <th style="width: 160px; text-align: center;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-corpo">
+                            <!-- Inserido dinamicamente via JavaScript -->
+                        </tbody>
+                    </table>
+
+                    <div id="tabela-vazia" class="empty-state" style="display: none;">
+                        <div class="empty-state-icon">📂</div>
+                        <p>Nenhum funcionário cadastrado ou encontrado.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Seção de Relatórios com Streams JS (Exercício 4) -->
+        <section class="reports-section" aria-labelledby="reports-title">
+            <div class="section-title-wrap">
+                <h2 id="reports-title">📊 Relatórios Dinâmicos (Streams JS)</h2>
+                <p>Relatórios gerados em tempo real utilizando os métodos de array <code>filter</code>, <code>reduce</code>, <code>new Set()</code> e <code>map</code>.</p>
+            </div>
+
+            <div class="reports-grid">
+                <!-- Relatório 1: Salário > R$ 5.000 (filter) -->
+                <div class="report-card">
+                    <div>
+                        <div class="report-header">
+                            <span class="report-title">Salário &gt; R$ 5.000</span>
+                            <span class="report-tag tag-filter">filter()</span>
+                        </div>
+                        <div class="report-value-highlight" id="relatorio-salario-qtd">0</div>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary);">Funcionários recebendo acima de R$ 5.000,00</p>
+                    </div>
+                    <ul class="report-list" id="relatorio-salario-lista">
+                        <!-- Itens dinâmicos -->
+                    </ul>
+                </div>
+
+                <!-- Relatório 2: Média Salarial (reduce) -->
+                <div class="report-card">
+                    <div>
+                        <div class="report-header">
+                            <span class="report-title">Média Salarial</span>
+                            <span class="report-tag tag-reduce">reduce()</span>
+                        </div>
+                        <div class="report-value-highlight" id="relatorio-media-valor">R$ 0,00</div>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary);">Média aritmética de todas as remunerações</p>
+                    </div>
+                    <div style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-secondary);">
+                        Folha Total: <strong id="relatorio-folha-total" style="color: var(--text-primary);">R$ 0,00</strong>
+                    </div>
+                </div>
+
+                <!-- Relatório 3: Cargos Únicos (map + new Set) -->
+                <div class="report-card">
+                    <div>
+                        <div class="report-header">
+                            <span class="report-title">Cargos Únicos</span>
+                            <span class="report-tag tag-set">new Set()</span>
+                        </div>
+                        <div class="report-value-highlight" id="relatorio-cargos-qtd">0</div>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary);">Cargos distintos mapeados sem repetição</p>
+                    </div>
+                    <div class="cargos-tags" id="relatorio-cargos-lista">
+                        <!-- Chips dinâmicos -->
+                    </div>
+                </div>
+
+                <!-- Relatório 4: Nomes em Maiúsculo (map) -->
+                <div class="report-card">
+                    <div>
+                        <div class="report-header">
+                            <span class="report-title">Nomes em Maiúsculo</span>
+                            <span class="report-tag tag-map">map()</span>
+                        </div>
+                        <div class="report-value-highlight" id="relatorio-nomes-qtd">0</div>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary);">Transformação textual com Array.map</p>
+                    </div>
+                    <ul class="report-list" id="relatorio-nomes-lista">
+                        <!-- Lista dinâmica -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Explicativa dos Conceitos e Exercícios -->
+        <section class="concepts-section" aria-labelledby="concepts-title">
+            <h3 id="concepts-title">💡 Conceitos Implementados & Resumo dos Exercícios</h3>
+            
+            <div class="accordion-item active">
+                <button class="accordion-trigger" type="button">
+                    <span>Exercício 1: Classe Funcionario, Getters/Setters e toString()</span>
+                    <span>▼</span>
+                </button>
+                <div class="accordion-content">
+                    <p>A classe <code>Funcionario</code> encapsula os atributos privados <code>_id</code>, <code>_nome</code>, <code>_idade</code>, <code>_cargo</code> e <code>_salario</code>. Foram definidos métodos de acesso (<code>get</code> e <code>set</code>) com validação de dados para garantir integridade e o método <code>toString()</code> formatado.</p>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-trigger" type="button">
+                    <span>Exercício 2 & 3: Funções Anônimas vs Expressões Lambda (Arrow Functions)</span>
+                    <span>▼</span>
+                </button>
+                <div class="accordion-content">
+                    <p>Demonstração prática da substituição de funções anônimas clássicas por arrow functions na manipulação do array de funcionários:</p>
+<pre><code>// 1. Função Anônima Tradicional (Ex: busca por ID):
+const buscarTradicional = function(id) {
+    return funcionarios.find(function(f) {
+        return f.id === id;
+    });
+};
+
+// 2. Substituída por Expressão Lambda / Arrow Function:
+const buscarPorId = (id) => funcionarios.find((f) => f.id === id);
+
+// Vantagens: sintaxe concisa, retorno implícito e escopo léxico de 'this'.</code></pre>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-trigger" type="button">
+                    <span>Exercício 4: Streams JS com map, filter, reduce e new Set()</span>
+                    <span>▼</span>
+                </button>
+                <div class="accordion-content">
+<pre><code>// 1. Salário > R$ 5.000:
+const maioresQue5000 = funcionarios.filter((f) => f.salario > 5000);
+
+// 2. Média Salarial com reduce:
+const media = funcionarios.reduce((acc, f) => acc + f.salario, 0) / funcionarios.length;
+
+// 3. Cargos únicos sem repetição com new Set():
+const cargosUnicos = [...new Set(funcionarios.map((f) => f.cargo))];
+
+// 4. Nomes em caixa alta com map():
+const nomesMaiusculos = funcionarios.map((f) => f.nome.toUpperCase());</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rodapé -->
+        <footer>
+            <p>Sistema de Gestão de Funcionários &bull; Startup de Tecnologia &bull; Atividade Prática 2</p>
+        </footer>
+    </div>
+
+    <!-- Container para Notificações Toast -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Script Principal (Módulo ES6) -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

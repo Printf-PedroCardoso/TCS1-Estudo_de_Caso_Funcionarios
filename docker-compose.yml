@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gestao_funcionarios_app
+    ports:
+      - "8080:80"
+    volumes:
+      # Mapeamento do diretório do projeto para permitir hot reload / desenvolvimento ao vivo
+      - ./:/usr/share/nginx/html:ro
+    restart: unless-stopped

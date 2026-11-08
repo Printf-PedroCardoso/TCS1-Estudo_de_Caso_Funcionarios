@@ -1,0 +1,6 @@
+.git
+.gitignore
+node_modules
+tests
+EC02 - Funcionarios.pdf
+*.log
